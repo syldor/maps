@@ -33,10 +33,43 @@ var init = function() {
     'default': defaultStyle
   });
 
-  var point = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(-1.37, 49.38).transform(fromProjection, toProjection));
+  var point = new OpenLayers.Feature.Vector(new OpenLayers.Geometry
+                                                .Point(-1.37, 49.38).transform(fromProjection, toProjection),
+                                                {message: 'hello'});
   var points_layer = new OpenLayers.Layer.Vector("Points Layer", {
-      styleMap: styleMap
+      styleMap: styleMap,
+      eventListeners:{
+        'featureselected':function(evt){
+          var feature = evt.feature;
+          var popup = new OpenLayers.Popup.FramedCloud("popup",
+              OpenLayers.LonLat.fromString(feature.geometry.toShortString()),
+              null,
+              feature.attributes.message +" <br>" + feature.attributes.location,
+              null,
+              true,
+              null
+          );
+          popup.autoSize = true;
+          popup.maxSize = new OpenLayers.Size(400, 800);
+          popup.fixedRelativePosition = true;
+          feature.popup = popup;
+          map.addPopup(popup);
+        },
+        'featureunselected': function(evt) {
+          var feature = evt.feature;
+          map.removePopup(feature.popup);
+          feature.popup.destroy();
+          feature.popup = null;
+        }
+      }
   });
+
+  var selector = new OpenLayers.Control.SelectFeature(points_layer, {
+    clickout: true,
+    autoActivate: true
+  });
+
+  map.addControl(selector);
   map.addLayer(points_layer);
   points_layer.addFeatures([point]);
 
