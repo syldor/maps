@@ -10,14 +10,14 @@
 		    var mapnik = new OpenLayers.Layer.OSM();
 		    var fromProjection = new OpenLayers.Projection("EPSG:4326");
 		    var toProjection = new OpenLayers.Projection("EPSG:900913");
-		    var position = new OpenLayers.LonLat(102.37, 17.58).transform(fromProjection, toProjection);
-		    var zoom = 7;
+		    var position = new OpenLayers.LonLat(1.05, 46.05).transform(fromProjection, toProjection);
+		    var zoom = 10;
 
 		    map.addLayer(mapnik);
 		    var markers = new OpenLayers.Layer.Markers("Markers");
 		    map.addLayer(markers);
 		    markers.addMarker(new OpenLayers.Marker(position));
-
+		    /*
 		    var lgpx = new OpenLayers.Layer.Vector("Laos track", {
 		            strategies: [new OpenLayers.Strategy.Fixed()],
 		            protocol: new OpenLayers.Protocol.HTTP({
@@ -28,6 +28,15 @@
 		            projection: new OpenLayers.Projection("EPSG:4326")
 		    });
 		    map.addLayer(lgpx);
+				*/
+				var geojson_layer = new OpenLayers.Layer.Vector("GeoJSON", {
+            strategies: [new OpenLayers.Strategy.Fixed()],
+            protocol: new OpenLayers.Protocol.HTTP({
+                url: "manche.json",
+                format: new OpenLayers.Format.GeoJSON()
+            })
+        });
+				map.addLayer(geojson_layer);
 
 		    map.setCenter(position, zoom);
 			}
