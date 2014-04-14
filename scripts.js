@@ -72,6 +72,5 @@ var init = function() {
   map.addControl(selector);
   map.addLayer(points_layer);
   points_layer.addFeatures([point]);
-
   map.setCenter(position, zoom);
 }
