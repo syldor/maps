@@ -4,7 +4,7 @@ var init = function() {
   var mapnik = new OpenLayers.Layer.OSM();
   var fromProjection = new OpenLayers.Projection("EPSG:4326");
   var toProjection = new OpenLayers.Projection("EPSG:900913");
-  var position = new OpenLayers.LonLat(-1.05, 49.05).transform(fromProjection, toProjection);
+  var position = new OpenLayers.LonLat(-1.05, 49.15).transform(fromProjection, toProjection);
   var zoom = 9;
   map.addLayer(mapnik);
 
@@ -23,19 +23,28 @@ var init = function() {
   map.addLayer(geojson_layer);
 
   /* Points Layer */
-  var defaultStyle = new OpenLayers.Style({
+
+  var styleMap = new OpenLayers.StyleMap({
     'pointRadius': 10,
     'fillColor': "yellow"
   });
 
+  var lookup = {
+    0: 7,
+    1: 10,
+    2: 13
+  };  
 
-  var styleMap = new OpenLayers.StyleMap({
-    'default': defaultStyle
-  });
+  styleMap.addUniqueValueRules("default", "type", lookup);
 
-  var point = new OpenLayers.Feature.Vector(new OpenLayers.Geometry
-                                                .Point(-1.37, 49.38).transform(fromProjection, toProjection),
-                                                {message: 'hello'});
+  var points = [];
+  var coord = [{lon: -1.27, lat: 48.90}, {lon: -1.22, lat: 49.54}, {lon: -1.33, lat: 49.40}, {lon: -1.15, lat: 49.10}]
+  for(var i = 0 ; i < coord.length ; i ++) {
+    points[i] = new OpenLayers.Feature.Vector(new OpenLayers.Geometry
+                                                .Point(coord[i].lon, coord[i].lat).transform(fromProjection, toProjection),
+                                                {message: 'hello', type: parseInt(Math.random()*3)});
+  }
+
   var points_layer = new OpenLayers.Layer.Vector("Points Layer", {
       styleMap: styleMap,
       eventListeners:{
@@ -71,6 +80,6 @@ var init = function() {
 
   map.addControl(selector);
   map.addLayer(points_layer);
-  points_layer.addFeatures([point]);
+  points_layer.addFeatures(points);
   map.setCenter(position, zoom);
 }
