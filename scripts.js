@@ -23,14 +23,15 @@ var init = function() {
   map.addLayer(geojson_layer);
 
   /* Points Layer */
+  var defaultStyle = new OpenLayers.Style({
+    'pointRadius': 10,
+    'fillColor': "yellow"
+  });
 
-  var symbolizer = OpenLayers.Util.applyDefaults({
-    pointRadius: 20,
-    fillColor: "red"
-  }, OpenLayers.Feature.Vector.style["default"]));
 
-  var styleMap = new OpenLayers.StyleMap({"default": "symbolizer"});
-
+  var styleMap = new OpenLayers.StyleMap({
+    'default': defaultStyle
+  });
 
   var point = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(-1.37, 49.38).transform(fromProjection, toProjection));
   var points_layer = new OpenLayers.Layer.Vector("Points Layer", {
