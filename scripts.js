@@ -43,16 +43,17 @@ var init = function() {
         elseFilter: true,
         symbolizer: {
           "fillColor": "red",
-          "pointRadius": 8
+          "pointRadius": 8.2
         }
       })
       ]
+    }),
+    "select": new OpenLayers.Style({
     })
   });
 
-  /* Points Layer */
   var points = [];
-  var coord = [{lon: -1.27, lat: 48.90}, {lon: -1.22, lat: 49.54}, {lon: -1.33, lat: 49.40}, {lon: -1.15, lat: 49.10}]
+  var coord = [{lon: -1.61, lat: 49.63}, {lon: -1.22, lat: 49.54}, {lon: -1.33, lat: 49.40}, {lon: -1.15, lat: 49.10}]
   for(var i = 0 ; i < coord.length ; i ++) {
     points[i] = new OpenLayers.Feature.Vector(new OpenLayers.Geometry
                                                 .Point(coord[i].lon, coord[i].lat).transform(fromProjection, toProjection),
