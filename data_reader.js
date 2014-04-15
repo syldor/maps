@@ -1,5 +1,6 @@
 /* We assume that the data to read is a csv file (actually ;) of the following format :
-date; commune; longitude; latitude */
+date; commune; longitude; latitude 
+The data is a lines 2D array*/
 
 var Dico = {};
 for (var i = 0 ; i < lines.length ; i++) {
