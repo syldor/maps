@@ -25,18 +25,32 @@ var init = function() {
   /* Points Layer */
 
   var styleMap = new OpenLayers.StyleMap({
-    'pointRadius': 10,
-    'fillColor': "yellow"
+    "default": new OpenLayers.Style({
+    },{
+      rules: [
+      new OpenLayers.Rule({
+        filter: new OpenLayers.Filter.Comparison({
+          type: OpenLayers.Filter.Comparison.LESS_THAN,
+          property: "type",
+          value: 1
+        }),
+        symbolizer: {
+          "pointRadius": 12,
+          "fillColor": "yellow"
+        }
+      }),
+      new OpenLayers.Rule({
+        elseFilter: true,
+        symbolizer: {
+          "fillColor": "red",
+          "pointRadius": 8
+        }
+      })
+      ]
+    })
   });
 
-  var lookup = {
-    0: 7,
-    1: 10,
-    2: 13
-  };  
-
-  styleMap.addUniqueValueRules("default", "type", lookup);
-
+  /* Points Layer */
   var points = [];
   var coord = [{lon: -1.27, lat: 48.90}, {lon: -1.22, lat: 49.54}, {lon: -1.33, lat: 49.40}, {lon: -1.15, lat: 49.10}]
   for(var i = 0 ; i < coord.length ; i ++) {
@@ -47,7 +61,7 @@ var init = function() {
 
   var points_layer = new OpenLayers.Layer.Vector("Points Layer", {
       styleMap: styleMap,
-      eventListeners:{
+      eventListeners: {
         'featureselected':function(evt){
           var feature = evt.feature;
           var popup = new OpenLayers.Popup.FramedCloud("popup",
