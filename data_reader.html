@@ -1,0 +1,49 @@
+
+<html>
+	<head>
+  	<title> Data Reader</title>
+    <script src="http://openlayers.org/api/OpenLayers.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+
+    <script  type="text/javascript">
+/* We assume that the data to read is a csv file (actually ;) of the following format :
+date; commune; longitude; latitude 
+The data is a lines 2D array*/
+		var rawFile = new XMLHttpRequest();
+		var lines;
+    rawFile.open("GET", "ascendants.csv", true);
+    rawFile.onreadystatechange = function ()
+    {
+        if(rawFile.readyState === 4)
+        {
+            if(rawFile.status === 200 || rawFile.status == 0)
+            {
+              var allText = rawFile.responseText;
+              lines = allText.split(";");
+              alert(lines[0]);
+              console.log(lines[0]);	
+              var Dico = {};
+							for (var i = 0 ; i < 5 ; i++) {
+								if (Dico[lines[i][1]]) {
+									Dico[lines[i][1]][0]++;
+								}
+								else {
+									Dico[lines[i][1]] = [];
+									Dico[lines[i][1]][0] = 1;
+									Dico[lines[i][1]][1] = lines[i][2];
+									Dico[lines[i][1]][2] = lines[i][3];
+								}
+							}
+							console.log(Dico);
+            }
+        }
+    }
+    rawFile.send(null);
+    
+		
+    </script>
+  </head>
+  <body>
+    <div id="map"></div>
+  </body>
+</html>
